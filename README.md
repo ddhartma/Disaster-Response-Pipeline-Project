@@ -2,7 +2,10 @@
 [image2]: assets/word_count_hist.png "image2"
 [image3]: assets/common_words.png "image3"
 [image4]: assets/genre_distribution.png "image4"
-[image5]: assets/correlation.png "image4"
+[image5]: assets/correlation.png "image5"
+[image6]: assets/web_1.png "image6"
+[image7]: assets/web_2.png "image7"
+[image8]: assets/web_3.png "image8"
 # Disaster Response Pipeline Project
 
 Let's create a machine learning pipeline that is able to save human life due to natural disasters.
@@ -75,7 +78,13 @@ datasets, ***merges*** the two datasets, ***cleans*** the data, ***stores*** it 
 
 
 ## The Web App <a name="web_app"></a>
-Below are a few screenshots of the web app.
+Below are a few screenshots of the web app. The web app header:
+    ![image6]
+    The message and result block:
+    ![image7]
+    The interactive dataset analysis part:
+    ![image8]
+
 
 
 ## CRISP-DM Analysis <a name="CRISP_DM"></a>
@@ -173,14 +182,14 @@ The notebook ***ETL Pipeline Preparation.ipynb*** contains the data engineering 
 - ***Creating Binaries***: The binary set of variables (see above) was created from the categoties.csv
 - ***Word count***: There is a strong dependeny to outliers (long messages) in each genre. 
 - ***Typical messages used for model training***:
-    - My friends we're here in Miragoane, we need help, we're in the street, cold and hungry.
-    - Water transport vehicles that are able to go through haze and shallow waters will be needed.
-    - Im a victim who lost everything. Im in Haitel's courtyard in Bois Verna with a lot of people. We need water
+    - I AM IN MISERY SEND SME MONEY FOR ME 
+    - The people in Henfrasa across from the La Paix Hospital need food and water. These people are thirsty and hunger is killing them. Please find a way to see what you can do for them. Urgent.
+    - Their hands are empty, they lost their families, their homes are rubble, we are asking for aid for these poor people who are dying of hunger, we are throwing out a shout to all the agencies that want to help those victims
 
 - ***Same messages after tokenization***:
-    - ['my', 'friend', 'miragoan', 'need', 'help', 'street', 'cold', 'hungri']
-    - ['water', 'transport', 'vehicl', 'abl', 'go', 'haze', 'shallow', 'water', 'need']
-    - ['im', 'victim', 'lost', 'everyth', 'im', 'haitel', 'courtyard', 'boi', 'verna', 'lot', 'peopl', 'we', 'need', 'water']
+    - ['i', 'am', 'in', 'misery', 'send', 'sme', 'money', 'for', 'me']
+    - ['the', 'people', 'henfrasa', 'across', 'la', 'paix', 'hospital', 'need', 'food', 'water', 'these', 'people', 'thirsty', 'hunger', 'killing', 'please', 'find', 'way', 'see', 'urgent']
+    - ['their', 'hand', 'empty', 'lost', 'family', 'home', 'rubble', 'asking', 'aid', 'poor', 'people', 'dying', 'hunger', 'throwing', 'shout', 'agency', 'want', 'help', 'victim']
 
 - The ***tokenization process*** includes:
     - replace urls with spaceholder
@@ -234,7 +243,9 @@ The answers to this CRISP questions and further information can be found in the 
 
 - ***Answer to question 3***: What are the 20 most common words in the training set?
 
-    Most common 20 words after tokenization: 'peopl', 'food', 'need', 'help', 'water', 'pleas', 'earthquak', 'like', 'area', 'would', 'us', 'said', 'flood', 'countri', 'thank', 'know', 'also', 'inform', 'govern', 'hous'
+    Most common 20 words after tokenization: 
+    
+    'people', 'food', 'water', 'help', 'need', 'please', 'earthquake', 'area', 'u', 'like', 'would', 'said', 'country', 'also', 'know', 'government', 'information', 'one', '000', 'year'
 
     ![image3]
 
