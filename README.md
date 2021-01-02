@@ -203,22 +203,40 @@ The notebook ***ETL Pipeline Preparation.ipynb*** contains the data engineering 
 ## Modeling: <a name="Modeling"></a>
 The model consists of sklearn [pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html) including a [GridSearchCV](https://scikit-learn.org/stable/modules/grid_search.html) tuning.
 
-- A CustomVectorizer class which inherits from the [CountVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html) class has been developed in order to switch between Porterstemmer and Lemmatization during training via GridSearchCV tuning. Thereby,  a CountVectorizer object converts a collection of text documents to a matrix of token counts.
+
+- A CustomVectorizer class which inherits from the [CountVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html) class has been developed in order to switch between Porterstemmer and Lemmatization and between stopwords on/off during training via GridSearchCV. Thereby,  a CountVectorizer object converts a collection of text documents to a matrix of token counts.
 - In addition, a [TfidfTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html) has been implemented. The goal of using tf-idf instead of the raw frequencies of occurrence of a token in a given document is to scale down the impact of tokens that occur very frequently in a given corpus and that are hence empirically less informative than features that occur in a small fraction of the training corpus.
 
 - As there are 36 target categories which have to be classified by the model, a [MultiOutputClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.multioutput.MultiOutputClassifier.html) was added to the pipeline. This multi target classification strategy consists of fitting one classifier per target. This is a simple strategy for extending classifiers like (RandomForestClassifier) that do not natively support multi-target classification.
 
-- A [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) is used as a target predictor: A random forest is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. 
+- A [Pipelinehelper](https://github.com/bmurauer/pipelinehelper) module has been imported to select between different classifier via GridSearchCV. This helper selects between two or more different transformers without pipelining them together.
+
+- A sklearn [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) is used as a target predictor: A random forest is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. 
+
+- Furthermore, a [AdaBoostClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html) has been tested. Based on sklearns description An AdaBoost  classifier is a meta-estimator that begins by fitting a classifier on the original dataset and then fits additional copies of the classifier on the same dataset but where the weights of incorrectly classified instances are adjusted such that subsequent classifiers focus more on difficult cases.
 
 The full pipeline consists of the following transformers/predictors:
 ```
 pipeline = Pipeline([
-                ('vect', CustomVectorizer(X_train, word_prep='stem')),
+            ('nlp', Pipeline([
+                ('vect', CustomVectorizer(X_train, word_prep='lemmatize')),
                 ('tfidf', TfidfTransformer()),
-                ('clf', MultiOutputClassifier(RandomForestClassifier()))
-            ])
+            ])),
+            ('classifier', PipelineHelper([
+                ('rfc', MultiOutputClassifier(RandomForestClassifier())),
+                ('abc', MultiOutputClassifier(
+                        AdaBoostClassifier(base_estimator=DecisionTreeClassifier(max_depth=1, class_weight='balanced'))))
+            ]))
+        ])
 ```
 
+- ***Best GridSearchCV Hyperparameter set***:
+
+    - Best score: 0.240
+    - Best parameters set:
+        - vect__max_df: 0.5
+        - vect__ngram_range: (1, 1)
+        - vect__word_prep: 'stem'
             
 
 ## Evaluation: <a name="Evaluation"></a>
@@ -258,19 +276,6 @@ The answers to this CRISP questions and further information can be found in the 
     Strong correlation (z: 0.8) are found, e.g. for 'transportation' and and 'other_infrasctructure'. However, for the majority of categories intercategorical dependencies are weak.
 
 
-## Instructions:
-1. Run the following commands in the project's root directory to set up your database and model.
-
-    - To run ETL pipeline that cleans data and stores in database
-        `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
-    - To run ML pipeline that trains classifier and saves
-        `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
-
-2. Run the following command in the app's directory to run your web app.
-    `python run.py`
-
-3. Go to http://0.0.0.0:3001/
-
 
 ## Setup Instructions <a name="Setup_Instructions"></a>
 The following is a brief set of instructions on setting up a cloned repository.
@@ -297,24 +302,39 @@ $ export PATH="/path/to/anaconda/bin:$PATH"
 - Change Directory to your project older, e.g. `cd my_github_projects`
 - Clone the Github Project inside this folder with Git Bash (Terminal) via:
 ```
-$ git clone https://github.com/ddhartma/ETL-Pipelines.git
+$ git clone https://github.com/ddhartma/Disaster-Response-Pipeline-Project.git
 ```
 
 - Change Directory
 ```
-$ cd 5_ETL_DATA_Pipelines
+$ cd path-to-main-folder
 ```
 
-- Create a new Python environment, e.g. ds_etl. Inside Git Bash (Terminal) write:
+- Create a new Python environment, e.g. ds_ndp. Inside Git Bash (Terminal) write:
 ```
-$ conda create --name ds_etl
+$ conda create --name ds_ndp
 ```
 
 - Install the following packages (via pip or conda)
 ```
 numpy = 1.17.4
 pandas = 0.24.2
+scikit-learn = 0.20
+pipelinehelper = 0.7.8
 ```
+Example via pip:
+```
+pip install numpy
+pip install pandas
+pip install scikit-learn==0.20
+pip install pipelinehelper
+```
+scikit-learn==0.20 is needed for sklearns dictionary output (output_dict=True) for the classification_report. Earlier versions do not support this.
+
+
+Link1 to [pipelinehelper](https://github.com/bmurauer/pipelinehelper) 
+
+Link2 to [pipelinehelper](https://stackoverflow.com/questions/23045318/scikit-grid-search-over-multiple-classifiers)
 
 - Check the environment installation via
 ```
@@ -323,8 +343,22 @@ $ conda env list
 
 - Activate the installed environment via
 ```
-$ conda activate ds_etl
+$ conda activate ds_ndp
 ```
+
+### Run the web App 
+
+1. Run the following commands in the project's root directory to set up your database and model.
+
+    - To run ETL pipeline that cleans data and stores in database
+        `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
+    - To run ML pipeline that trains classifier and saves
+        `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+
+2. Run the following command in the app's directory to run your web app.
+    `python run.py`
+
+3. Go to http://0.0.0.0:3001/
 
 ## Acknowledgments <a name="Acknowledgments"></a>
 * This project is part of the Udacity Nanodegree program 'Data Science'. Please check this [link](https://www.udacity.com) for more information.
@@ -344,3 +378,5 @@ $ conda activate ds_etl
 * [Hacking Scikit-Learn’s Vectorizers](https://towardsdatascience.com/hacking-scikit-learns-vectorizers-9ef26a7170af)
 * [How to inherit from CountVectorizer I](https://stackoverflow.com/questions/51430484/how-to-subclass-a-vectorizer-in-scikit-learn-without-repeating-all-parameters-in)
 * [How to inherit from CountVectorizer II](https://sirinnes.wordpress.com/2015/01/22/custom-vectorizer-for-scikit-learn/)
+* [pipelinehelper I](https://github.com/bmurauer/pipelinehelper) 
+* [pipelinehelper II](https://stackoverflow.com/questions/23045318/scikit-grid-search-over-multiple-classifiers)
