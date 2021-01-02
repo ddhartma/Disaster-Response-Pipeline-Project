@@ -8,14 +8,16 @@
 [image8]: assets/web_3.png "image8"
 # Disaster Response Pipeline Project
 
-Let's create a machine learning pipeline that is able to save human life due to natural disasters.
+Let's create a machine learning pipeline that is able to save human life during natural disasters.
 
-Take a data set containing real messages that were sent during disaster events. Create a machine learning pipeline including an app to categorize these events. An emergency worker can:
+To achieve this take a data set containing real messages that were sent during disaster events. Train a machine learning pipeline and create a web app to categorize new messages. An emergency worker can then:
   - input a new message,
   - get classification results in several categories and
   - send such classified reports to an appropriate disaster relief agency.
 
 Examples of natural disasters resulting from natural processes of the Earth include floods, hurricanes, tornadoes, volcanic eruptions, earthquakes, tsunamis, storms, and other geologic processes. Those disasters can cause loss of life and lead to private and public economic damages.
+
+An automatic evaluation of text based news could simplify a decision process for emergency organisations and accelerate deliveries of relief goods.
 
 In this project the used dataset is based on ***real*** disaster data from [Figure Eight]().
 ## Outline
@@ -61,21 +63,24 @@ The ML processes were first developed in a jupyter notebook (ML/ML Pipeline Prep
 
 - ***ML/ML Pipeline Preparation.ipynb***: Jupyter notebook containg all ML steps (loads data from the SQLite database, ***splits*** the dataset into training and test sets, ***builds*** a text processing and machine learning pipeline, ***trains*** and ***tunes*** a model using GridSearchCV, outputs results on the ***test*** set, ***exports*** the final model as a pickle file
 - ***ML/models/...pkl:*** pickle files containing the trained models created in the ML/ML Pipeline Preparation.ipynb notebook
-- ***model/train_classifier.py***: Python script countaing the ML pipelining part for creating a model
-- ***model/...pkl***: pickle files containing the trained models. These models are loaded and used in the web app
+- ***models/train_classifier.py***: Python script countaing the ML pipelining part for creating a model
+- ***models/...pkl***: pickle files containing the trained models. These models are loaded and used in the web app
+- ***models/message_set.csv***: Example set of raw and tokenized messages 
+- ***models/message_stats_direct.csv***: word count of tokenized direct messages
+- ***models/message_stats_news.csv***:  word count of tokenized news messages
+- ***models/message_stats_social.csv***:  word count of tokenized social messages
+- ***models/most_common_words.csv***: csv file with ascending idf values for all words in the vocabulary.
 
 ### Flask app:
-The Flask web app contains 
+The Flask web app  
 
-    - dataframe evaluation results and 
-    - provides an user interactive message classification terminal.
+    - shows evaluation results of the dataset 
+    - enables a user interactive message classification
 
 - ***app/run.py***: Python (Flask) script to start the server process. It provides the html template content. 
 - ***app/static/img/...png***: images needed for the web app ***master.html*** file.
 - ***app/templates/master.html***: the main html file to create the web app.
-- ***app/templates/go.html***: html file for presenting the prediction result from an inserted message.
-datasets, ***merges*** the two datasets, ***cleans*** the data, ***stores*** it in a SQLite database)
-
+- ***app/templates/go.html***: html file for presenting the prediction result for a given message.
 
 ## The Web App <a name="web_app"></a>
 Below are a few screenshots of the web app. The web app header:
@@ -89,17 +94,22 @@ Below are a few screenshots of the web app. The web app header:
 
 ## CRISP-DM Analysis <a name="CRISP_DM"></a>
 In the beginning a CRISP-DM analysis (CROSS INDUSTRY STANDARD PROCESS FOR DATA MINING) has been applied containing the process steps:
+- Business Understanding
+- DataFrame Understanding
+- Data preparation
+- Modeling
+- Evaluation
 
 ## Business Understanding <a name="Business_Understanding"></a>
 
-**What does the app need to be checked to improve its performance?** This question is divided in separate  - more accurate - questions:
+**What does the app still need to be to improve its performance?** This question is divided in separate  - more accurate - questions:
 
 - Question 1: How are the three different 'genre' types distributed?
-- Question 2: What is the distribution of words-counts for each genre? Are there any outliers?
+- Question 2: What is the distribution of word-counts for each genre? Are there any outliers?
 - Question 3: What are the 20 most common words in the training set?
 - Question 4: Are there any significant correlations between the categories?
 
-Answers to these questions are provided in the notebook ```ML/ML Pipeline Preparation.ipynb```
+Answers to these questions are provided in the notebook ```ML/ML Pipeline Preparation.ipynb``` and in the web app.
 
 ## DataFrame Understanding <a name="DataFrame_Understanding"></a>
 Dataset with 26028 observations (messages) and 40 columns
@@ -165,8 +175,8 @@ Dataset with 26028 observations (messages) and 40 columns
 
 The notebook ***ETL Pipeline Preparation.ipynb*** contains the data engineering steps and and all the results.
 
-- ***NaN values***: Missing values are from the categorical varibale 'original'. This column is not needed for modeling. Hence those NaN values do not need to be imputed.
-- ***Dublicate values***: 170 dublicate values were found during ETL processing. Those were removed from the dartaset.
+- ***NaN values***: All missing values are attributed tto the categorical varibale 'original'. This column is not needed for modeling. Hence those NaN values do not need to be imputed.
+- ***Dublicate values***: 170 dublicate values were found during ETL processing. Those were removed from the dataset.
 - ***special values***: Rows, where column 'related' is classified with 2 were dropped. Those messages are messages which are, e.g.
     - not translated
     - without a meaning or not not understandable code like     
@@ -178,7 +188,7 @@ The notebook ***ETL Pipeline Preparation.ipynb*** contains the data engineering 
         - "The internet caf Net@le that's by the Dal road by the Maranata church ( incomplete )"
         - "It's Over in Gressier. The population in the area - Incomplete"
     As the amount of 188 messages with relates=2 is too low to justify a time consuming transformation process (like language translation from different langauages to English), these rows will be ignored   
-- ***Dropping Columns***: The columns ```id```, ```origin``` and ```genre``` are not used for modeling. ```genre``` was used to answer CRISP-DM analysis questions.
+- ***Dropping Columns***: The columns ```id```, ```origin``` and ```genre``` are not used for modeling. ```genre```, however, was used to answer CRISP-DM analysis questions.
 - ***Creating Binaries***: The binary set of variables (see above) was created from the categoties.csv
 - ***Word count***: There is a strong dependeny to outliers (long messages) in each genre. 
 - ***Typical messages used for model training***:
@@ -241,7 +251,7 @@ pipeline = Pipeline([
 
 ## Evaluation: <a name="Evaluation"></a>
 
-The answers to this CRISP questions and further information can be found in the jupyter notebook. The most important results are:
+The answers to the CRISP questions (see above) and further information can be found in the jupyter notebook. The most important results are:
 
 - ***Answer to question 1***: How are the three different 'genre' types distributed?
     ![image4]
@@ -249,7 +259,7 @@ The answers to this CRISP questions and further information can be found in the 
     Almost half of the messages (13036) messages are 'news' messages. There are 10634 'direct' and 
     2358 'social' messages.
 
-- ***Answer to question 2***: What is the distribution of words-counts for each genre? Are there any outliers?
+- ***Answer to question 2***: What is the distribution of word-counts for each genre? Are there any outliers?
 
     A word count of the messages gave the following distributions: 
 
@@ -274,7 +284,6 @@ The answers to this CRISP questions and further information can be found in the 
     ![image5]
 
     Strong correlation (z: 0.8) are found, e.g. for 'transportation' and and 'other_infrasctructure'. However, for the majority of categories intercategorical dependencies are weak.
-
 
 
 ## Setup Instructions <a name="Setup_Instructions"></a>
