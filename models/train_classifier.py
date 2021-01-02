@@ -101,12 +101,13 @@ class StartingVerbExtractor(BaseEstimator, TransformerMixin):
         return df_x_tagged
 
 
+# defines a custom vectorizer class
 class CustomVectorizer(CountVectorizer):
     """ A CustomVectorizer class which inherits from the CountVectorizer class.
         Aim: switch between Porterstemmer and Lemmatization during training via GridSearchCV.
         A CountVectorizer object converts a collection of text documents to a matrix of token counts.
     """
-    def __init__(self, X, word_prep, **kwargs):
+    def __init__(self, X, word_prep='lemmatize', remove_stopwords=True, **kwargs):
         """ Init function that takes all arguments of CountVectorizer base class and adds two own arguments
 
             INPUTS:
@@ -124,6 +125,7 @@ class CustomVectorizer(CountVectorizer):
 
         self.X = X
         self.word_prep = word_prep
+        self.remove_stopwords = remove_stopwords
         self.lowercase=False
 
 
@@ -159,7 +161,10 @@ class CustomVectorizer(CountVectorizer):
         tokens = word_tokenize(text)
 
         # Remove stopwords
-        tokens = [t for t in tokens if t not in stopwords.words('english')]
+        if self.remove_stopwords == True:
+            tokens = [t for t in tokens if t not in stopwords.words('english')]
+        else:
+            pass
 
         # Stem, normalize all words to lower case, remove white spaces
         if self.word_prep == 'stem':
@@ -198,12 +203,11 @@ class CustomVectorizer(CountVectorizer):
 
             OUTPUTS:
             ------------
-            - iterative call of prepare_doc, transform traing (testing) features,
+            - call prepare_doc, transform training (testing) features,
               return cleaned lists of word tokenized messages
         """
         preprocess = self.build_preprocessor()
         return lambda doc : preprocess(self.decode(self.prepare_doc(doc)))
-
 
 # load data from database
 def load_data(database_filepath):
