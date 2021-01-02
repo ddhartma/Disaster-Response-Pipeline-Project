@@ -230,7 +230,7 @@ The answers to this CRISP questions and further information can be found in the 
 
     ![image2]
 
-    There is some kind of dependeny on outliers (long messages) in each genre. News are have longer text sequences than direct or social messages. To further improve the model one could use data padding/truncating technics so that all messages have the same length
+    There is some outlier spreading in each genre due to long messages. News have longer text sequences than direct or social messages. To further improve the model one could use data padding/truncating techniques so that all messages have the same length.
 
 - ***Answer to question 3***: What are the 20 most common words in the training set?
 
@@ -238,7 +238,7 @@ The answers to this CRISP questions and further information can be found in the 
 
     ![image3]
 
-    Notice for words with lowest IDF values it is expected that these words appear more often. For idf_weights=1 they would appear in each and every document in the collection. The lower the IDF value of a word, the less unique it is to any particular document.
+    Notice, words with lower IDF appear more often than those with higher IDF values. For idf_weights=1 they would appear in each and every document in the collection. The lower the IDF value of a word, the less unique it is to any particular document.
 
 - ***Answer to question 4***: Are there any significant correlations between the categories?
 
@@ -319,6 +319,8 @@ $ conda activate ds_etl
 * This project is part of the Udacity Nanodegree program 'Data Science'. Please check this [link](https://www.udacity.com) for more information.
 
 ## Further Links <a name="Further_Links"></a>
+* [Working With Text Data](https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html)
+* [Natural Language Precessing Book](http://www.nltk.org/book/)
 * [sklearn pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html)
 * [sklearn CountVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html)
 * [sklearn TfidfTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html)
@@ -329,6 +331,5 @@ $ conda activate ds_etl
 * [Tuning the hyper-parameters of an estimator](https://scikit-learn.org/stable/modules/grid_search.html)
 * [Hyperparameter tuning in pipelines with GridSearchCV](https://ryan-cranfill.github.io/sentiment-pipeline-sklearn-5/)
 * [Hacking Scikit-Learn’s Vectorizers](https://towardsdatascience.com/hacking-scikit-learns-vectorizers-9ef26a7170af)
-* [Working With Text Data](https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html)
 * [How to inherit from CountVectorizer I](https://stackoverflow.com/questions/51430484/how-to-subclass-a-vectorizer-in-scikit-learn-without-repeating-all-parameters-in)
 * [How to inherit from CountVectorizer II](https://sirinnes.wordpress.com/2015/01/22/custom-vectorizer-for-scikit-learn/)
