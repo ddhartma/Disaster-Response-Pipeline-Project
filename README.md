@@ -1,3 +1,8 @@
+[image1]: assets/word_count_box.png "image1"
+[image2]: assets/word_count_hist.png "image2"
+[image3]: assets/common_words.png "image3"
+[image4]: assets/genre_distribution.png "image4"
+[image5]: assets/correlation.png "image4"
 # Disaster Response Pipeline Project
 
 Let's create a machine learning pipeline that is able to save human life due to natural disasters.
@@ -20,6 +25,8 @@ In this project the used dataset is based on ***real*** disaster data from [Figu
     - [Modeling](#Modeling)
     - [Evaluation](#Evaluation)
 - [Setup Instructions](#Setup_Instructions)
+- [Acknowledgments](#Acknowledgments)
+- [Further Links](#Further_Links)
 
 ## The Pipelining Process (files in the repo) <a name="Pipelining_Process"></a>
 ### ETL pipeline:
@@ -68,6 +75,7 @@ datasets, ***merges*** the two datasets, ***cleans*** the data, ***stores*** it 
 
 
 ## The Web App <a name="web_app"></a>
+Below are a few screenshots of the web app.
 
 
 ## CRISP-DM Analysis <a name="CRISP_DM"></a>
@@ -78,13 +86,14 @@ In the beginning a CRISP-DM analysis (CROSS INDUSTRY STANDARD PROCESS FOR DATA M
 **What does the app need to be checked to improve its performance?** This question is divided in separate  - more accurate - questions:
 
 - Question 1: How are the three different 'genre' types distributed?
-- Question 2: What is the distribution of letters-count for each genre? Are there any outliers? 
-- Question 3: What is the distribution of words-counts for each genre? Are there any outliers?
-- Question 4: Does an outlier removement improve the model?
-- Question 5: Are there any significant correlations between the categories?
+- Question 2: What is the distribution of words-counts for each genre? Are there any outliers?
+- Question 3: What are the 20 most common words in the training set?
+- Question 4: Are there any significant correlations between the categories?
+
+Answers to these questions are provided in the notebook ```ML/ML Pipeline Preparation.ipynb```
 
 ## DataFrame Understanding <a name="DataFrame_Understanding"></a>
-Dataset with 26028 observations and 40 columns
+Dataset with 26028 observations (messages) and 40 columns
 
 - **Categorical** columns:
 
@@ -136,7 +145,7 @@ Dataset with 26028 observations and 40 columns
 	| cold | int64 | 0 | 1 | 0 | 
 	| other_weather | int64 | 0 | 1 | 0 | 
 	| direct_report | int64 | 0 | 1 | 0 | 
-
+    
 - There are ***0 numerical*** (0x int and 0x float) columns
 - There are ***4 categorical*** columns
 - There are ***36 binary*** columns
@@ -148,74 +157,94 @@ Dataset with 26028 observations and 40 columns
 The notebook ***ETL Pipeline Preparation.ipynb*** contains the data engineering steps and and all the results.
 
 - ***NaN values***: Missing values are from the categorical varibale 'original'. This column is not needed for modeling. Hence those NaN values do not need to be imputed.
-
 - ***Dublicate values***: 170 dublicate values were found during ETL processing. Those were removed from the dartaset.
-
 - ***special values***: Rows, where column 'related' is classified with 2 were dropped. Those messages are messages which are, e.g.
     - not translated
     - without a meaning or not not understandable code like     
         - "Damocles!Hracles!Philockles!Hyphocles.!yayecles!zigzacles!domagecles!lucles!77h"
         - "9GeQYeYGQEQtm"
         - "Aa.Bb.Cc.Dd.Ee.Ff.Gg.Hh.Ii.Jj.Kk.Ll.Mm.Nn.Oo.Pp.Qq.Rr.Ss.Tt.Uu.Vv.Ww.Xx.Yy.Zz.KERLANGE."
-
     - incomplete (broken) messages like
         - "NOTES: this message is not complete"
         - "The internet caf Net@le that's by the Dal road by the Maranata church ( incomplete )"
         - "It's Over in Gressier. The population in the area - Incomplete"
-    
     As the amount of 188 messages with relates=2 is too low to justify a time consuming transformation process (like language translation from different langauages to English), these rows will be ignored   
+- ***Dropping Columns***: The columns ```id```, ```origin``` and ```genre``` are not used for modeling. ```genre``` was used to answer CRISP-DM analysis questions.
+- ***Creating Binaries***: The binary set of variables (see above) was created from the categoties.csv
+- ***Word count***: There is a strong dependeny to outliers (long messages) in each genre. 
+- ***Typical messages used for model training***:
+    - My friends we're here in Miragoane, we need help, we're in the street, cold and hungry.
+    - Water transport vehicles that are able to go through haze and shallow waters will be needed.
+    - Im a victim who lost everything. Im in Haitel's courtyard in Bois Verna with a lot of people. We need water
 
-    ***Dropping Columns***: The columns ```id```, ```origin``` and ```genre``` are not used for modeling. They are not dropped from the dataframe for answering CRISP-DM analysis questions.
+- ***Same messages after tokenization***:
+    - ['my', 'friend', 'miragoan', 'need', 'help', 'street', 'cold', 'hungri']
+    - ['water', 'transport', 'vehicl', 'abl', 'go', 'haze', 'shallow', 'water', 'need']
+    - ['im', 'victim', 'lost', 'everyth', 'im', 'haitel', 'courtyard', 'boi', 'verna', 'lot', 'peopl', 'we', 'need', 'water']
 
-    ***Creating Binaries***: The binary set of variables (see above) was created from the categoties.csv
-
+- The ***tokenization process*** includes:
+    - replace urls with spaceholder
+    - remove punctuation
+    - remove stopwords
+    - stem/lemmatize words 
+    - normalize all words to lower case 
+    - remove white spaces
 
 
 ## Modeling: <a name="Modeling"></a>
+The model consists of sklearn [pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html) including a [GridSearchCV](https://scikit-learn.org/stable/modules/grid_search.html) tuning.
 
-The main modeling approach in this Jupyter notebook is done based on a sklearn Linear Regression. The R-squared value (a measure of how much of the data variability can be explained by the model) is ABOUT ... for training and ... for testing.
-Are there nonlinear tendencies for some features-target-dependencies? Are there linearization steps included?
-Are there deep learning nonlinear model applied for predictions (Tensorflow, Pytorch)?
+- A CustomVectorizer class which inherits from the [CountVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html) class has been developed in order to switch between Porterstemmer and Lemmatization during training via GridSearchCV tuning. Thereby,  a CountVectorizer object converts a collection of text documents to a matrix of token counts.
+- In addition, a [TfidfTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html) has been implemented. The goal of using tf-idf instead of the raw frequencies of occurrence of a token in a given document is to scale down the impact of tokens that occur very frequently in a given corpus and that are hence empirically less informative than features that occur in a small fraction of the training corpus.
+
+- As there are 36 target categories which have to be classified by the model, a [MultiOutputClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.multioutput.MultiOutputClassifier.html) was added to the pipeline. This multi target classification strategy consists of fitting one classifier per target. This is a simple strategy for extending classifiers like (RandomForestClassifier) that do not natively support multi-target classification.
+
+- A [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) is used as a target predictor: A random forest is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. 
+
+The full pipeline consists of the following transformers/predictors:
+```
+pipeline = Pipeline([
+                ('vect', CustomVectorizer(X_train, word_prep='stem')),
+                ('tfidf', TfidfTransformer()),
+                ('clf', MultiOutputClassifier(RandomForestClassifier()))
+            ])
+```
+
+            
 
 ## Evaluation: <a name="Evaluation"></a>
 
 The answers to this CRISP questions and further information can be found in the jupyter notebook. The most important results are:
 
-    Answer to Question 1: ...
-    Answer to Question 2: ...
-    Answer to Question 3: ...
+- ***Answer to question 1***: How are the three different 'genre' types distributed?
+    ![image4]
 
+    Almost half of the messages (13036) messages are 'news' messages. There are 10634 'direct' and 
+    2358 'social' messages.
 
-Below are a few screenshots of the web app.
+- ***Answer to question 2***: What is the distribution of words-counts for each genre? Are there any outliers?
 
- to analyze disaster data from Figure Eight to build a model for an API that classifies disaster messages.
+    A word count of the messages gave the following distributions: 
 
-This project will consists of a web app where one can input a new message and get classification results in several categories. The web app will also display visualizations of the data.
+    ![image1]
 
+    ![image2]
 
-Below are a few screenshots of the web app.
+    There is some kind of dependeny on outliers (long messages) in each genre. News are have longer text sequences than direct or social messages. To further improve the model one could use data padding/truncating technics so that all messages have the same length
 
+- ***Answer to question 3***: What are the 20 most common words in the training set?
 
+    Most common 20 words after tokenization: 'peopl', 'food', 'need', 'help', 'water', 'pleas', 'earthquak', 'like', 'area', 'would', 'us', 'said', 'flood', 'countri', 'thank', 'know', 'also', 'inform', 'govern', 'hous'
 
+    ![image3]
 
-After you complete the notebooks for the ETL and machine learning pipeline, you'll need to transfer your work into Python scripts, process_data.py and train_classifier.py. If someone in the future comes with a revised or new dataset of messages, they should be able to easily create a new model just by running your code. These Python scripts should be able to run with additional arguments specifying the files used for the data and model.
-Example:
+    Notice for words with lowest IDF values it is expected that these words appear more often. For idf_weights=1 they would appear in each and every document in the collection. The lower the IDF value of a word, the less unique it is to any particular document.
 
-python process_data.py disaster_messages.csv disaster_categories.csv DisasterResponse.db
+- ***Answer to question 4***: Are there any significant correlations between the categories?
 
-python train_classifier.py ../data/DisasterResponse.db classifier.pkl
+    ![image5]
 
-Templates for these scripts are provided in the Resources section, as well as the Project Workspace IDE. The code for handling these arguments on the command line is given to you in the templates.
-Flask App
-
-In the last step, you'll display your results in a Flask web app. We have provided a workspace for you with starter files. You will need to upload your database file and pkl file with your model.
-
-This is the part of the project that allows for the most creativity. So if you are comfortable with html, css, and javascript, feel free to make the web app as elaborate as you would like.
-
-In the starter files, you will see that the web app already works and displays a visualization. You'll just have to modify the file paths to your database and pickled model file as needed.
-
-There is one other change that you are required to make. We've provided code for a simple data visualization. Your job will be to create two additional data visualizations in your web app based on data you extract from the SQLite database. You can modify and copy the code we provided in the starter files to make the visualizations.
-
+    Strong correlation (z: 0.8) are found, e.g. for 'transportation' and and 'other_infrasctructure'. However, for the majority of categories intercategorical dependencies are weak.
 
 
 ## Instructions:
@@ -286,5 +315,20 @@ $ conda env list
 $ conda activate ds_etl
 ```
 
-## Acknowledgments <a name="Introduction"></a>
+## Acknowledgments <a name="Acknowledgments"></a>
 * This project is part of the Udacity Nanodegree program 'Data Science'. Please check this [link](https://www.udacity.com) for more information.
+
+## Further Links <a name="Further_Links"></a>
+* [sklearn pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html)
+* [sklearn CountVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html)
+* [sklearn TfidfTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html)
+* [10+ Examples for Using CountVectorizer](https://kavita-ganesan.com/how-to-use-countvectorizer/#.X--j6OAxmFo)
+* [TF IDF | TFIDF Python Example](https://towardsdatascience.com/natural-language-processing-feature-engineering-using-tf-idf-e8b9d00e7e76)
+* [Text Feature Extraction With Scikit-Learn Pipeline](https://towardsdatascience.com/the-triune-pipeline-for-three-major-transformers-in-nlp-18c14e20530)
+* [How to Use Tfidftransformer & Tfidfvectorizer?](https://kavita-ganesan.com/tfidftransformer-tfidfvectorizer-usage-differences/#.X-9OH-AxmFp)
+* [Tuning the hyper-parameters of an estimator](https://scikit-learn.org/stable/modules/grid_search.html)
+* [Hyperparameter tuning in pipelines with GridSearchCV](https://ryan-cranfill.github.io/sentiment-pipeline-sklearn-5/)
+* [Hacking Scikit-Learn’s Vectorizers](https://towardsdatascience.com/hacking-scikit-learns-vectorizers-9ef26a7170af)
+* [Working With Text Data](https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html)
+* [How to inherit from CountVectorizer I](https://stackoverflow.com/questions/51430484/how-to-subclass-a-vectorizer-in-scikit-learn-without-repeating-all-parameters-in)
+* [How to inherit from CountVectorizer II](https://sirinnes.wordpress.com/2015/01/22/custom-vectorizer-for-scikit-learn/)
