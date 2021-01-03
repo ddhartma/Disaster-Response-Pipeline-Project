@@ -10,7 +10,7 @@
 
 Let's create a machine learning pipeline that is able to save human life during natural disasters.
 
-To achieve this take a data set containing real messages that were sent during disaster events. Train a machine learning pipeline and create a web app to categorize new messages. An emergency worker can then:
+To achieve this task take a data set containing real messages that were sent during disaster events. Train a machine learning pipeline and create a web app to categorize new messages. An emergency worker can then:
   - input a new message,
   - get classification results in several categories and
   - send such classified reports to an appropriate disaster relief agency.
@@ -19,7 +19,7 @@ Examples of natural disasters resulting from natural processes of the Earth incl
 
 An automatic evaluation of text based news could simplify a decision process for emergency organisations and accelerate deliveries of relief goods.
 
-In this project the used dataset is based on ***real*** disaster data from [Figure Eight]().
+In this project the used dataset is based on ***real*** disaster data from [Figure Eight](https://appen.com/).
 ## Outline
 -  [The Pipelining Process (files in the repo)](#Pipelining_Process)
 -  [The Web App](#web_app)
@@ -29,6 +29,7 @@ In this project the used dataset is based on ***real*** disaster data from [Figu
     - [DataFrame Preparation](#DataFrame_Preparation)
     - [Modeling](#Modeling)
     - [Evaluation](#Evaluation)
+- [Suggestions for further improvements](#Suggestions)
 - [Setup Instructions](#Setup_Instructions)
 - [Acknowledgments](#Acknowledgments)
 - [Further Links](#Further_Links)
@@ -62,14 +63,14 @@ The ML processes were first developed in a jupyter notebook (ML/ML Pipeline Prep
     - Exports the final model as a pickle file
 
 - ***ML/ML Pipeline Preparation.ipynb***: Jupyter notebook containg all ML steps (loads data from the SQLite database, ***splits*** the dataset into training and test sets, ***builds*** a text processing and machine learning pipeline, ***trains*** and ***tunes*** a model using GridSearchCV, outputs results on the ***test*** set, ***exports*** the final model as a pickle file
-- ***ML/models/...pkl:*** pickle files containing the trained models created in the ML/ML Pipeline Preparation.ipynb notebook
+- ***ML/models/...pkl:*** various pickle files containing the trained models created by running the ML/ML Pipeline Preparation.ipynb notebook (files not in the repo, storage path after training with the ML Pipeline Preparation notebook)
 - ***models/train_classifier.py***: Python script countaing the ML pipelining part for creating a model
-- ***models/...pkl***: pickle files containing the trained models. These models are loaded and used in the web app
+- ***models/...pkl***: various pickle files containing the trained models. These models are loaded and used in the web app (files not in the repo, storage path after training with train_classifier.py)
 - ***models/message_set.csv***: Example set of raw and tokenized messages 
 - ***models/message_stats_direct.csv***: word count of tokenized direct messages
 - ***models/message_stats_news.csv***:  word count of tokenized news messages
 - ***models/message_stats_social.csv***:  word count of tokenized social messages
-- ***models/most_common_words.csv***: csv file with ascending idf values for all words in the vocabulary.
+- ***models/most_common_words.csv***: ascending idf values for all words in the vocabulary.
 
 ### Flask app:
 The Flask web app  
@@ -109,7 +110,7 @@ In the beginning a CRISP-DM analysis (CROSS INDUSTRY STANDARD PROCESS FOR DATA M
 - Question 3: What are the 20 most common words in the training set?
 - Question 4: Are there any significant correlations between the categories?
 
-Answers to these questions are provided in the notebook ```ML/ML Pipeline Preparation.ipynb``` and in the web app.
+Answers to these questions are also provided in the notebook ```ML/ML Pipeline Preparation.ipynb``` and in the web app.
 
 ## DataFrame Understanding <a name="DataFrame_Understanding"></a>
 Dataset with 26028 observations (messages) and 40 columns
@@ -209,45 +210,50 @@ The notebook ***ETL Pipeline Preparation.ipynb*** contains the data engineering 
     - normalize all words to lower case 
     - remove white spaces
 
+- ***Size of Bag-of-Words***: 27047
 
 ## Modeling: <a name="Modeling"></a>
 The model consists of sklearn [pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html) including a [GridSearchCV](https://scikit-learn.org/stable/modules/grid_search.html) tuning.
 
 
 - A CustomVectorizer class which inherits from the [CountVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html) class has been developed in order to switch between Porterstemmer and Lemmatization and between stopwords on/off during training via GridSearchCV. Thereby,  a CountVectorizer object converts a collection of text documents to a matrix of token counts.
-- In addition, a [TfidfTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html) has been implemented. The goal of using tf-idf instead of the raw frequencies of occurrence of a token in a given document is to scale down the impact of tokens that occur very frequently in a given corpus and that are hence empirically less informative than features that occur in a small fraction of the training corpus.
+- In addition, a [TfidfTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html) has been implemented. The goal of using tf-idf instead of raw token frequencies is to scale down the impact of frequent tokens. Frequent tokens are empirically less informative than features that occur in a small fraction of the training corpus.
 
-- As there are 36 target categories which have to be classified by the model, a [MultiOutputClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.multioutput.MultiOutputClassifier.html) was added to the pipeline. This multi target classification strategy consists of fitting one classifier per target. This is a simple strategy for extending classifiers like (RandomForestClassifier) that do not natively support multi-target classification.
+- As there are 36 target categories which have to be classified by the model, a [MultiOutputClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.multioutput.MultiOutputClassifier.html) was added to the pipeline. This multi target classification strategy consists of fitting one classifier per target. This is a simple strategy for extending classifiers like RandomForestClassifier that do not natively support multi-target classification.
 
-- A [Pipelinehelper](https://github.com/bmurauer/pipelinehelper) module has been imported to select between different classifier via GridSearchCV. This helper selects between two or more different transformers without pipelining them together.
+- A [Pipelinehelper](https://github.com/bmurauer/pipelinehelper) module has been imported to select between different classifier via GridSearchCV. This helper selects between two or more different transformers without pipelining them together. This is especially helpful, when you want to switch between different classifiers.
 
-- A sklearn [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) is used as a target predictor: A random forest is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and uses averaging to improve the predictive accuracy and control over-fitting. 
+- A sklearn [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) is used as a target predictor: A random forest is a meta-estimator that fits a number of decision tree classifiers on various sub-samples of the dataset. It uses averaging to improve the predictive accuracy and control over-fitting. 
 
-- Furthermore, a [AdaBoostClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html) has been tested. Based on sklearns description An AdaBoost  classifier is a meta-estimator that begins by fitting a classifier on the original dataset and then fits additional copies of the classifier on the same dataset but where the weights of incorrectly classified instances are adjusted such that subsequent classifiers focus more on difficult cases.
+- Furthermore, a [AdaBoostClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html) has been tested. Based on sklearns description an AdaBoost  classifier is a meta-estimator that begins by fitting a classifier on the original dataset and then fits additional copies of the classifier on the same dataset but where the weights of incorrectly classified instances are adjusted such that subsequent classifiers focus more on those difficult cases.
 
-The full pipeline consists of the following transformers/predictors:
-```
-pipeline = Pipeline([
-            ('nlp', Pipeline([
-                ('vect', CustomVectorizer(X_train, word_prep='lemmatize')),
-                ('tfidf', TfidfTransformer()),
-            ])),
-            ('classifier', PipelineHelper([
-                ('rfc', MultiOutputClassifier(RandomForestClassifier())),
-                ('abc', MultiOutputClassifier(
-                        AdaBoostClassifier(base_estimator=DecisionTreeClassifier(max_depth=1, class_weight='balanced'))))
-            ]))
-        ])
-```
+- The full pipeline consists of the following transformers/predictors:
+    ```
+    pipeline = Pipeline([
+                ('nlp', Pipeline([
+                    ('vect', CustomVectorizer(X_train, word_prep='lemmatize')),
+                    ('tfidf', TfidfTransformer()),
+                ])),
+                ('classifier', PipelineHelper([
+                    ('rfc', MultiOutputClassifier(RandomForestClassifier())),
+                    ('abc', MultiOutputClassifier(
+                            AdaBoostClassifier(base_estimator=DecisionTreeClassifier(max_depth=1, class_weight='balanced'))))
+                ]))
+            ])
+    ```
 
 - ***Best GridSearchCV Hyperparameter set***:
 
-    - Best score: 0.240
+    - Fitting 3 folds for each of 48 candidates, totalling 144 fits
+    - elapsed: 304.5min
+    - Best score: 0.248
     - Best parameters set:
-        - vect__max_df: 0.5
-        - vect__ngram_range: (1, 1)
-        - vect__word_prep: 'stem'
-            
+        - MultiOutputClassifier
+        - estimator=RandomForestClassifier
+        - min_samples_split=2
+        - n_estimators=20
+        - nlp__vect__max_df: 0.5
+        - nlp__vect__remove_stopwords: True     
 
 ## Evaluation: <a name="Evaluation"></a>
 
@@ -285,6 +291,20 @@ The answers to the CRISP questions (see above) and further information can be fo
 
     Strong correlation (z: 0.8) are found, e.g. for 'transportation' and and 'other_infrasctructure'. However, for the majority of categories intercategorical dependencies are weak.
 
+## Suggestions for further model improvements <a name="Suggestions"></a>
+
+- One could try to filter messages more deeply. There are still a lot of messages, which are not very helpful as they are not meaningful or cannot be be understood. Use for example [NLTK's](http://www.nltk.org/book/) (or here [medium](https://medium.com/@gianpaul.r/tokenization-and-parts-of-speech-pos-tagging-in-pythons-nltk-library-2d30f70af13b)) Parts-of-Speech taggging to further improve the model. Build a Transformer class to filter too weak Parts-of-Speech taggged messages from the training dataset.
+
+- Use other ML classifer like e.g. [SGDGradient](https://scikit-learn.org/stable/modules/sgd.html), XGB Classifier, SVM Classifier
+
+- Use Deep Learning techniques like Recurrent neural networks with word embeddings to further optimize predictions.
+
+- Increase the parameter space of [GridSearchCV](https://scikit-learn.org/stable/modules/grid_search.html) by increasing ranges of single parameters or adding more parameter which should be screened.
+
+- Use [RandomizedSearchCV](https://scikit-learn.org/stable/modules/grid_search.html) to speed up larger parameter spaces.
+
+- There is some outlier spreading in each genre due to long messages. News have longer text sequences than direct or social messages. To further improve the model one could use data padding/truncating techniques so that all messages have the same length.
+
 
 ## Setup Instructions <a name="Setup_Instructions"></a>
 The following is a brief set of instructions on setting up a cloned repository.
@@ -293,7 +313,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites: Installation of Python via Anaconda and Command Line Interaface <a name="Prerequisites"></a>
 - Install [Anaconda](https://www.anaconda.com/distribution/). Install Python 3.7 - 64 Bit
-- If you need a good Command Line Interface (CLI) under Windowsa you could use [git](https://git-scm.com/). Under Mac OS use the pre-installed Terminal.
+- If you need a Command Line Interface (CLI) under Windows you could use [git](https://git-scm.com/). Under Mac OS use the pre-installed Terminal.
 
 - Upgrade Anaconda via
 ```
@@ -355,17 +375,44 @@ $ conda env list
 $ conda activate ds_ndp
 ```
 
+### Switch the pipelines
+- Active pipeline at the moment: pipeline_1 (Fast training/testing) pipeline
+- More sophisticated pipelines start with pipeline_2.
+- Model training has been done with ```pipeline_2```. 
+- In order to switch between pipelines or to add more pipelines open train.classifier.py. Adjust the pipelines in `def main()` which should be tested (only one or more are possible) via the list ```pipeline_names```.
+
+```
+def main():
+   ...
+
+    if len(sys.argv) == 3:
+        ...
+
+        # start pipelining, build the model
+        pipeline_names = ['pipeline_1', 'pipeline_2']
+```
+
+
 ### Run the web App 
 
 1. Run the following commands in the project's root directory to set up your database and model.
 
-    - To run ETL pipeline that cleans data and stores in database
-        `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
-    - To run ML pipeline that trains classifier and saves
-        `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+    To run ETL pipeline that cleans data and stores in database
 
-2. Run the following command in the app's directory to run your web app.
-    `python run.py`
+    
+        python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
+
+    To run ML pipeline that trains classifier and saves
+    
+        python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl
+  
+
+2. Run the following command in the app's directory to run your web app
+
+        python run.py
+
+
+
 
 3. Go to http://0.0.0.0:3001/
 
@@ -375,6 +422,7 @@ $ conda activate ds_ndp
 ## Further Links <a name="Further_Links"></a>
 * [Working With Text Data](https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html)
 * [Natural Language Precessing Book](http://www.nltk.org/book/)
+* [Parts of Speech Tagging](https://medium.com/@gianpaul.r/tokenization-and-parts-of-speech-pos-tagging-in-pythons-nltk-library-2d30f70af13b)
 * [sklearn pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html)
 * [sklearn CountVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html)
 * [sklearn TfidfTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html)
@@ -389,3 +437,4 @@ $ conda activate ds_ndp
 * [How to inherit from CountVectorizer II](https://sirinnes.wordpress.com/2015/01/22/custom-vectorizer-for-scikit-learn/)
 * [pipelinehelper I](https://github.com/bmurauer/pipelinehelper) 
 * [pipelinehelper II](https://stackoverflow.com/questions/23045318/scikit-grid-search-over-multiple-classifiers)
+* [Choosing the Best Algorithm for your Classification Model](https://medium.com/datadriveninvestor/choosing-the-best-algorithm-for-your-classification-model-7c632c78f38f)
