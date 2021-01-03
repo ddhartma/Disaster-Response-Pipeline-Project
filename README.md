@@ -13,7 +13,7 @@ Let's create a machine learning pipeline that is able to save human life during 
 To achieve this task take a data set containing real messages that were sent during disaster events. Train a machine learning pipeline and create a web app to categorize new messages. An emergency worker can then:
   - input a new message,
   - get classification results in several categories and
-  - send such classified reports to an appropriate disaster relief agency.
+  - send such classified reports (automatically) to an appropriate disaster relief agency.
 
 Examples of natural disasters resulting from natural processes of the Earth include floods, hurricanes, tornadoes, volcanic eruptions, earthquakes, tsunamis, storms, and other geologic processes. Those disasters can cause loss of life and lead to private and public economic damages.
 
