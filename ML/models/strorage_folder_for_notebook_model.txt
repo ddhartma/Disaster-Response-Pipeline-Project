@@ -1,0 +1,5 @@
+ Storage folder for
+
+- various pickle files containing the trained models
+- created by running the ML/ML Pipeline Preparation.ipynb notebook
+- (files not in the repo, storage path after training with the ML Pipeline Preparation notebook)
