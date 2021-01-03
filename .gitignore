@@ -1,0 +1,5 @@
+models/classifier_pipeline_1.pkl
+models/classifier_pipeline_2.pkl
+app/__pycache__/
+ML/.ipynb_checkpoints/ML Pipeline Preparation-checkpoint.ipynb
+app/templates/master_backup.html

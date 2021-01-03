@@ -7,35 +7,48 @@
 
     <title>Disasters</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
+<!--navbar links-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+	<a class="navbar-brand" href="#">Disasters Response Project</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02" aria-expanded="false"
+            aria-label="Toggle navigation">
+    		<span class="navbar-toggler-icon"></span>
+  		</button>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">Disaster Response Project</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="https://www.udacity.com/">Made with Udacity</a></li>
-                <li><a href="https://github.com/">Contact</a></li>
-            </ul>
-        </div>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+            	<a class="nav-link" href="https://www.udacity.com">Udacity</a>
+            </li>
+            <li class="nav-item dropdown">
+            	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              		Contact
+            	</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              	<a class="dropdown-item" href="https://github.com/ddhartma">GitHub</a>
+              	<a class="dropdown-item" href="https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile">LinkedIn</a>
+            </div>
+          	</li>
+        </ul>
     </div>
 </nav>
-
 
 <div class="jumbotron">
     <div class="container">
         <h1 class="text-center">Disaster Response Project</h1>
         <p class="text-center">Analyzing message data for disaster response</p>
         <hr />
-      
+
         <div class="row">
             <div class="col-lg-12 form-group-lg">
                 <form action="/go" method="get">
@@ -51,24 +64,164 @@
         {% endblock %}
     </div>
 </div>
-
+{% block content %}
 <div class="container">
-    {% block content %}
+
         <div class="page-header">
             <h1 class="text-center">Overview of Training Dataset</h1>
         </div>
-    {% endblock %}
 
-    {% for id in ids %}
-        <div id="{{id}}"></div>
-    {% endfor %}
+
 </div>
+
+<!--middle section-->
+<div class="row">
+  <!--social media buttons column-->
+  <div class="col-1 border-right">
+      <div id="follow-me" class="mt-3">
+          <a href="https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile">
+              <img src="../static/img/linkedinlogo.png" alt="linkedin" class="img-fluid mb-4 ml-2">
+          </a>
+          <a href="https://github.com/ddhartma">
+              <img src="../static/img/githublogo.png" alt="github" class="img-fluid ml-2">
+          </a>
+      </div>
+  </div>
+
+
+  <div class="col-11">
+      <!--How are the three different 'genre' types distributed?-->
+      <div class="row border">
+          <div class="col-6 border-right">
+              <div id="{{ids[0]}}"></div>
+          </div>
+
+          <div class="col-6">
+            	<h2>Distribution of 'genres'</h2>
+            	<ul>
+                  <li>Almost half of the messages in the training set (13036) messages are 'news' messages.</li>
+                  <li>There are 10634 'direct' messages.</li>
+                  <li>There are 2358 'social' messages.</li>
+            	</ul>
+            <p>Typical messages before and after tokenization</p>
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Raw message</th>
+                  <th scope="col">Tokenized message</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>{{ message_raw[0] }}</td>
+                  <td>{{ message_tok[0] }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>{{ message_raw[5] }}</td>
+                  <td>{{ message_tok[5] }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>{{ message_raw[24] }}</td>
+                  <td>{{ message_tok[24] }}</td>
+                </tr>
+              </tbody>
+            </table>
+          	</div>
+      </div>
+
+      <!--Boxplot: What is the distribution of words-counts for each genre?-->
+      <div class="row border">
+          <div class="col-6 border-right">
+              <div id="{{ids[1]}}"></div>
+          </div>
+
+          <div class="col-6">
+              	<h2>Boxplot: word-count distribution for each genre</h2>
+            	<p>A word count of the messages for each genre gave the following the distributions on the left side (Boxplot and Histogram)</p>
+            	<table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Message type</th>
+                  <th scope="col">Median of word count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>direct</td>
+                  <td>{{ median_direct }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>news</td>
+                  <td>{{ median_news }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>social</td>
+                  <td>{{ median_social }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+
+       <!--Histogram: What is the distribution of words-counts for each genre?-->
+      <div class="row border">
+          <div class="col-6 border-right">
+              <div id="{{ids[2]}}"></div>
+          </div>
+
+          <div class="col-6">
+            	<h2>Histogram: word-count distribution for each genre</h2>
+            	<ul>
+                  <li>There is some outlier spreading in each genre due to long messages.</li>
+                  <li>News have longer text sequences than direct or social messages.</li>
+                  <li>To further improve the model one could use data padding/truncating techniques so that all messages have the same length.</li>
+            	</ul>
+          </div>
+      </div>
+
+      <!--What are the 20 most common words in the training set?-->
+      <div class="row border">
+          <div class="col-6 border-right">
+              <div id="{{ids[3]}}"></div>
+          </div>
+
+          <div class="col-6">
+              	<h2>What are the 20 most common words in the training set?</h2>
+            	<p>Most common 20 words after tokenization:<br>'people', 'food', 'water', 'help', 'need', 'please', 'earthquake', 'area', 'u', 'like', 'would', 'said', 'country', 'also', 'know', 'government', 'information', 'one', '000', 'year'</p>
+            	<br>
+            	<p>Notice, words with lower IDF appear more often than those with higher IDF values. For idf_weights=1 they would appear in each and every document in the collection. The lower the IDF value of a word, the less unique it is to any particular document. </p>
+          </div>
+      </div>
+
+      <!--Are there any significant correlations between the categories?-->
+      <div class="row border">
+          <div class="col-6 border-right">
+              <div id="{{ids[4]}}"></div>
+          </div>
+
+          <div class="col-6">
+             	<h2>Are there any significant correlations between the categories?</h2>
+            	<p>Strong correlation (z: 0.8) are found, e.g. for 'transportation' and and 'other_infrasctructure'. However, for the majority of categories intercategorical dependencies are weak.</p>
+          </div>
+      </div>
+
+  </div>
+</div>
+{% endblock %}
 
 <script type="text/javascript">
     const graphs = {{graphJSON | safe}};
     const ids = {{ids | safe}};
     for(let i in graphs) {
-        Plotly.plot(ids[i], graphs[i].data, graphs[i].layout);
+        Plotly.plot(ids[i], graphs[i].data, graphs[i].layout, {responsive: true});
     }
 </script>
 

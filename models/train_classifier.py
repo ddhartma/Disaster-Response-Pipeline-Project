@@ -463,7 +463,7 @@ def evaluate_model(model, df, X_train, X_test, Y_test, category_names, pipeline_
 
     # get most commomn words
     most_comon_words = tfid_transform(X_train)
-    most_comon_words.to_csv('most_common_words.csv')
+    most_comon_words.to_csv('models/most_common_words.csv')
     print('20 most common words')
     print(list(most_comon_words.index)[:20])
     print(' ')
@@ -488,7 +488,7 @@ def evaluate_model(model, df, X_train, X_test, Y_test, category_names, pipeline_
             pass
 
     message_set = pd.DataFrame({'message_raw': message_raw, 'message_tok': message_tok})
-    message_set.to_csv('message_set.csv')
+    message_set.to_csv('models/message_set.csv')
     print('... message_set.csv saved!')
     print(' ')
 
@@ -502,11 +502,11 @@ def evaluate_model(model, df, X_train, X_test, Y_test, category_names, pipeline_
     print('Median of news message word count: ', message_stats_news.median())
     print('Median of social message word count: ', message_stats_social.median())
     print(' ')
-    message_stats_direct.to_csv('message_stats_direct.csv')
+    message_stats_direct.to_csv('models/message_stats_direct.csv')
     print('... message_stats_direct.csv saved!')
-    message_stats_news.to_csv('message_stats_news.csv')
+    message_stats_news.to_csv('models/message_stats_news.csv')
     print('... message_stats_news.csv saved!')
-    message_stats_social.to_csv('message_stats_social.csv')
+    message_stats_social.to_csv('models/message_stats_social.csv')
     print('... message_stats_social.csv saved!')
 
     print('... messages_stats.json saved!')
@@ -559,7 +559,7 @@ def main():
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
 
         # start pipelining, build the model
-        pipeline_names = ['pipeline_2']
+        pipeline_names = ['pipeline_1']
         for pipeline_name in pipeline_names:
             print('Building model...')
             model, pipeline, parameters = build_model(X_train, Y_train, pipeline_name)
