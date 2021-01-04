@@ -336,7 +336,7 @@ $ git clone https://github.com/ddhartma/Disaster-Response-Pipeline-Project.git
 
 - Change Directory
 ```
-$ cd path-to-main-folder
+$ cd Disaster-Response-Pipeline-Project
 ```
 
 - Create a new Python environment, e.g. ds_ndp. Inside Git Bash (Terminal) write:
