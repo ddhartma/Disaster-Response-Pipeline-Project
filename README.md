@@ -50,7 +50,7 @@ ETL processes were first developed in a jupyter notebook (ETL/ETL Pipeline Prepa
 - ***data/DisasterResponse.db***: database for ML pieline- SQlite output of the ETL process
 - ***data/disaster_categories.csv***: csv file containing one part of the dataset (messages, original, genre)
 - ***data/disaster_messages.csv***: sv file containing the second part of the dataset (categories)
-- ***data/process_data.py***: Python script containg all ETL steps (***loads*** the messages and categories 
+- ***data/process_data.py***: Python script containg all ETL steps (***loads*** the messages and categories
 
 ### ML pipeline:
 The ML processes were first developed in a jupyter notebook (ML/ML Pipeline Preparation.ipynb) and then transferred to the Python script (train_classifier.py) The learning ML pipeline contains the steps:
@@ -66,7 +66,7 @@ The ML processes were first developed in a jupyter notebook (ML/ML Pipeline Prep
 - ***ML/models/...pkl:*** various pickle files containing the trained models created by running the ML/ML Pipeline Preparation.ipynb notebook (files not in the repo, storage path after training with the ML Pipeline Preparation notebook)
 - ***models/train_classifier.py***: Python script countaing the ML pipelining part for creating a model
 - ***models/...pkl***: various pickle files containing the trained models. These models are loaded and used in the web app (files not in the repo, storage path after training with train_classifier.py)
-- ***models/message_set.csv***: Example set of raw and tokenized messages 
+- ***models/message_set.csv***: Example set of raw and tokenized messages
 - ***models/message_stats_direct.csv***: word count of tokenized direct messages
 - ***models/message_stats_news.csv***:  word count of tokenized news messages
 - ***models/message_stats_social.csv***:  word count of tokenized social messages
@@ -75,10 +75,10 @@ The ML processes were first developed in a jupyter notebook (ML/ML Pipeline Prep
 ### Flask app:
 The Flask web app  
 
-    - shows evaluation results of the dataset 
+    - shows evaluation results of the dataset
     - enables a user interactive message classification
 
-- ***app/run.py***: Python (Flask) script to start the server process. It provides the html template content. 
+- ***app/run.py***: Python (Flask) script to start the server process. It provides the html template content.
 - ***app/static/img/...png***: images needed for the web app ***master.html*** file.
 - ***app/templates/master.html***: the main html file to create the web app.
 - ***app/templates/go.html***: html file for presenting the prediction result for a given message.
@@ -119,57 +119,57 @@ Dataset with 26028 observations (messages) and 40 columns
 
 	| column_name | type | min | max | number NaN |
 	| :-------------  | :-------------  | :-------------  | :-------------  | :-------------  |
-	| id | int64 | 2 | 30265 | 0 | 
-	| message | object |      | | News Update | Serious loss of life expected in devastating earthquake in Haiti http ow.ly 16klRU | 0 | 
-	| original | object | NaN | NaN | 15990 | 
-	| genre | object | direct | social | 0 | 
+	| id | int64 | 2 | 30265 | 0 |
+	| message | object |      | | News Update | Serious loss of life expected in devastating earthquake in Haiti http ow.ly 16klRU | 0 |
+	| original | object | NaN | NaN | 15990 |
+	| genre | object | direct | social | 0 |
 
 
 - **Binaries** columns:
 
 	| column_name | type | min | max | number NaN |
 	| :-------------  | :-------------  | :-------------  | :-------------  | :-------------  |
-	| related | int64 | 0 | 1 | 0 | 
-	| request | int64 | 0 | 1 | 0 | 
-	| offer | int64 | 0 | 1 | 0 | 
-	| aid_related | int64 | 0 | 1 | 0 | 
-	| medical_help | int64 | 0 | 1 | 0 | 
-	| medical_products | int64 | 0 | 1 | 0 | 
-	| search_and_rescue | int64 | 0 | 1 | 0 | 
-	| security | int64 | 0 | 1 | 0 | 
-	| military | int64 | 0 | 1 | 0 | 
-	| child_alone | int64 | 0 | 0 | 0 | 
-	| water | int64 | 0 | 1 | 0 | 
-	| food | int64 | 0 | 1 | 0 | 
-	| shelter | int64 | 0 | 1 | 0 | 
-	| clothing | int64 | 0 | 1 | 0 | 
-	| money | int64 | 0 | 1 | 0 | 
-	| missing_people | int64 | 0 | 1 | 0 | 
-	| refugees | int64 | 0 | 1 | 0 | 
-	| death | int64 | 0 | 1 | 0 | 
-	| other_aid | int64 | 0 | 1 | 0 | 
-	| infrastructure_related | int64 | 0 | 1 | 0 | 
-	| transport | int64 | 0 | 1 | 0 | 
-	| buildings | int64 | 0 | 1 | 0 | 
-	| electricity | int64 | 0 | 1 | 0 | 
-	| tools | int64 | 0 | 1 | 0 | 
-	| hospitals | int64 | 0 | 1 | 0 | 
-	| shops | int64 | 0 | 1 | 0 | 
-	| aid_centers | int64 | 0 | 1 | 0 | 
-	| other_infrastructure | int64 | 0 | 1 | 0 | 
-	| weather_related | int64 | 0 | 1 | 0 | 
-	| floods | int64 | 0 | 1 | 0 | 
-	| storm | int64 | 0 | 1 | 0 | 
-	| fire | int64 | 0 | 1 | 0 | 
-	| earthquake | int64 | 0 | 1 | 0 | 
-	| cold | int64 | 0 | 1 | 0 | 
-	| other_weather | int64 | 0 | 1 | 0 | 
-	| direct_report | int64 | 0 | 1 | 0 | 
-    
+	| related | int64 | 0 | 1 | 0 |
+	| request | int64 | 0 | 1 | 0 |
+	| offer | int64 | 0 | 1 | 0 |
+	| aid_related | int64 | 0 | 1 | 0 |
+	| medical_help | int64 | 0 | 1 | 0 |
+	| medical_products | int64 | 0 | 1 | 0 |
+	| search_and_rescue | int64 | 0 | 1 | 0 |
+	| security | int64 | 0 | 1 | 0 |
+	| military | int64 | 0 | 1 | 0 |
+	| child_alone | int64 | 0 | 0 | 0 |
+	| water | int64 | 0 | 1 | 0 |
+	| food | int64 | 0 | 1 | 0 |
+	| shelter | int64 | 0 | 1 | 0 |
+	| clothing | int64 | 0 | 1 | 0 |
+	| money | int64 | 0 | 1 | 0 |
+	| missing_people | int64 | 0 | 1 | 0 |
+	| refugees | int64 | 0 | 1 | 0 |
+	| death | int64 | 0 | 1 | 0 |
+	| other_aid | int64 | 0 | 1 | 0 |
+	| infrastructure_related | int64 | 0 | 1 | 0 |
+	| transport | int64 | 0 | 1 | 0 |
+	| buildings | int64 | 0 | 1 | 0 |
+	| electricity | int64 | 0 | 1 | 0 |
+	| tools | int64 | 0 | 1 | 0 |
+	| hospitals | int64 | 0 | 1 | 0 |
+	| shops | int64 | 0 | 1 | 0 |
+	| aid_centers | int64 | 0 | 1 | 0 |
+	| other_infrastructure | int64 | 0 | 1 | 0 |
+	| weather_related | int64 | 0 | 1 | 0 |
+	| floods | int64 | 0 | 1 | 0 |
+	| storm | int64 | 0 | 1 | 0 |
+	| fire | int64 | 0 | 1 | 0 |
+	| earthquake | int64 | 0 | 1 | 0 |
+	| cold | int64 | 0 | 1 | 0 |
+	| other_weather | int64 | 0 | 1 | 0 |
+	| direct_report | int64 | 0 | 1 | 0 |
+
 - There are ***0 numerical*** (0x int and 0x float) columns
 - There are ***4 categorical*** columns
 - There are ***36 binary*** columns
-- There are ***15990 missing values*** in total in the dataset. 
+- There are ***15990 missing values*** in total in the dataset.
 
 
 ## Data preparation <a name="DataFrame_Preparation"></a>
@@ -191,9 +191,9 @@ The notebook ***ETL Pipeline Preparation.ipynb*** contains the data engineering 
     As the amount of 188 messages with relates=2 is too low to justify a time consuming transformation process (like language translation from different langauages to English), these rows will be ignored   
 - ***Dropping Columns***: The columns ```id```, ```origin``` and ```genre``` are not used for modeling. ```genre```, however, was used to answer CRISP-DM analysis questions.
 - ***Creating Binaries***: The binary set of variables (see above) was created from the categoties.csv
-- ***Word count***: There is a strong dependeny to outliers (long messages) in each genre. 
+- ***Word count***: There is a strong dependeny to outliers (long messages) in each genre.
 - ***Typical messages used for model training***:
-    - I AM IN MISERY SEND SME MONEY FOR ME 
+    - I AM IN MISERY SEND SME MONEY FOR ME
     - The people in Henfrasa across from the La Paix Hospital need food and water. These people are thirsty and hunger is killing them. Please find a way to see what you can do for them. Urgent.
     - Their hands are empty, they lost their families, their homes are rubble, we are asking for aid for these poor people who are dying of hunger, we are throwing out a shout to all the agencies that want to help those victims
 
@@ -206,8 +206,8 @@ The notebook ***ETL Pipeline Preparation.ipynb*** contains the data engineering 
     - replace urls with spaceholder
     - remove punctuation
     - remove stopwords
-    - stem/lemmatize words 
-    - normalize all words to lower case 
+    - stem/lemmatize words
+    - normalize all words to lower case
     - remove white spaces
 
 - ***Size of Bag-of-Words***: 27047
@@ -223,7 +223,7 @@ The model consists of sklearn [pipeline](https://scikit-learn.org/stable/modules
 
 - A [Pipelinehelper](https://github.com/bmurauer/pipelinehelper) module has been imported to select between different classifier via GridSearchCV. This helper selects between two or more different transformers without pipelining them together. This is especially helpful, when you want to switch between different classifiers.
 
-- A sklearn [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) is used as a target predictor: A random forest is a meta-estimator that fits a number of decision tree classifiers on various sub-samples of the dataset. It uses averaging to improve the predictive accuracy and control over-fitting. 
+- A sklearn [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) is used as a target predictor: A random forest is a meta-estimator that fits a number of decision tree classifiers on various sub-samples of the dataset. It uses averaging to improve the predictive accuracy and control over-fitting.
 
 - Furthermore, a [AdaBoostClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html) has been tested. Based on sklearns description an AdaBoost  classifier is a meta-estimator that begins by fitting a classifier on the original dataset and then fits additional copies of the classifier on the same dataset but where the weights of incorrectly classified instances are adjusted such that subsequent classifiers focus more on those difficult cases.
 
@@ -262,12 +262,12 @@ The answers to the CRISP questions (see above) and further information can be fo
 - ***Answer to question 1***: How are the three different 'genre' types distributed?
     ![image4]
 
-    Almost half of the messages (13036) messages are 'news' messages. There are 10634 'direct' and 
+    Almost half of the messages (13036) messages are 'news' messages. There are 10634 'direct' and
     2358 'social' messages.
 
 - ***Answer to question 2***: What is the distribution of word-counts for each genre? Are there any outliers?
 
-    A word count of the messages gave the following distributions: 
+    A word count of the messages gave the following distributions:
 
     ![image1]
 
@@ -277,8 +277,8 @@ The answers to the CRISP questions (see above) and further information can be fo
 
 - ***Answer to question 3***: What are the 20 most common words in the training set?
 
-    Most common 20 words after tokenization: 
-    
+    Most common 20 words after tokenization:
+
     'people', 'food', 'water', 'help', 'need', 'please', 'earthquake', 'area', 'u', 'like', 'would', 'said', 'country', 'also', 'know', 'government', 'information', 'one', '000', 'year'
 
     ![image3]
@@ -361,7 +361,7 @@ pip install pipelinehelper
 scikit-learn==0.20 is needed for sklearns dictionary output (output_dict=True) for the classification_report. Earlier versions do not support this.
 
 
-Link1 to [pipelinehelper](https://github.com/bmurauer/pipelinehelper) 
+Link1 to [pipelinehelper](https://github.com/bmurauer/pipelinehelper)
 
 Link2 to [pipelinehelper](https://stackoverflow.com/questions/23045318/scikit-grid-search-over-multiple-classifiers)
 
@@ -378,7 +378,7 @@ $ conda activate ds_ndp
 ### Switch the pipelines
 - Active pipeline at the moment: pipeline_1 (Fast training/testing) pipeline
 - More sophisticated pipelines start with pipeline_2.
-- Model training has been done with ```pipeline_2```. 
+- Model training has been done with ```pipeline_2```.
 - In order to switch between pipelines or to add more pipelines open train.classifier.py. Adjust the pipelines in `def main()` which should be tested (only one or more are possible) via the list ```pipeline_names```.
 
 ```
@@ -393,19 +393,19 @@ def main():
 ```
 
 
-### Run the web App 
+### Run the web App
 
 1. Run the following commands in the project's root directory to set up your database and model.
 
     To run ETL pipeline that cleans data and stores in database
 
-    
+
         python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
 
     To run ML pipeline that trains classifier and saves
-    
+
         python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl
-  
+
 
 2. Run the following command in the app's directory to run your web app
 
@@ -420,21 +420,35 @@ def main():
 * This project is part of the Udacity Nanodegree program 'Data Science'. Please check this [link](https://www.udacity.com) for more information.
 
 ## Further Links <a name="Further_Links"></a>
+Working with Text data
 * [Working With Text Data](https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html)
 * [Natural Language Precessing Book](http://www.nltk.org/book/)
 * [Parts of Speech Tagging](https://medium.com/@gianpaul.r/tokenization-and-parts-of-speech-pos-tagging-in-pythons-nltk-library-2d30f70af13b)
-* [sklearn pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html)
+
+CountVectorizer and TfidfTransformer
 * [sklearn CountVectorizer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html)
-* [sklearn TfidfTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html)
 * [10+ Examples for Using CountVectorizer](https://kavita-ganesan.com/how-to-use-countvectorizer/#.X--j6OAxmFo)
+* [sklearn TfidfTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html)
 * [TF IDF | TFIDF Python Example](https://towardsdatascience.com/natural-language-processing-feature-engineering-using-tf-idf-e8b9d00e7e76)
-* [Text Feature Extraction With Scikit-Learn Pipeline](https://towardsdatascience.com/the-triune-pipeline-for-three-major-transformers-in-nlp-18c14e20530)
 * [How to Use Tfidftransformer & Tfidfvectorizer?](https://kavita-ganesan.com/tfidftransformer-tfidfvectorizer-usage-differences/#.X-9OH-AxmFp)
-* [Tuning the hyper-parameters of an estimator](https://scikit-learn.org/stable/modules/grid_search.html)
-* [Hyperparameter tuning in pipelines with GridSearchCV](https://ryan-cranfill.github.io/sentiment-pipeline-sklearn-5/)
-* [Hacking Scikit-Learn’s Vectorizers](https://towardsdatascience.com/hacking-scikit-learns-vectorizers-9ef26a7170af)
+
+Inherit from Transformer (CountVectorizer)
 * [How to inherit from CountVectorizer I](https://stackoverflow.com/questions/51430484/how-to-subclass-a-vectorizer-in-scikit-learn-without-repeating-all-parameters-in)
 * [How to inherit from CountVectorizer II](https://sirinnes.wordpress.com/2015/01/22/custom-vectorizer-for-scikit-learn/)
-* [pipelinehelper I](https://github.com/bmurauer/pipelinehelper) 
+* [Hacking Scikit-Learn’s Vectorizers](https://towardsdatascience.com/hacking-scikit-learns-vectorizers-9ef26a7170af)
+
+Pipeline
+* [Text Feature Extraction With Scikit-Learn Pipeline](https://towardsdatascience.com/the-triune-pipeline-for-three-major-transformers-in-nlp-18c14e20530)
+* [sklearn pipeline](https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html)
+* [Hyperparameter tuning in pipelines with GridSearchCV](https://ryan-cranfill.github.io/sentiment-pipeline-sklearn-5/)
+
+Pipelinehelper
+* [pipelinehelper I](https://github.com/bmurauer/pipelinehelper)
 * [pipelinehelper II](https://stackoverflow.com/questions/23045318/scikit-grid-search-over-multiple-classifiers)
+
+
+GridSearchCV
+* [Tuning the hyper-parameters of an estimator](https://scikit-learn.org/stable/modules/grid_search.html)
+
+Classification
 * [Choosing the Best Algorithm for your Classification Model](https://medium.com/datadriveninvestor/choosing-the-best-algorithm-for-your-classification-model-7c632c78f38f)
