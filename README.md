@@ -446,9 +446,23 @@ Pipelinehelper
 * [pipelinehelper I](https://github.com/bmurauer/pipelinehelper)
 * [pipelinehelper II](https://stackoverflow.com/questions/23045318/scikit-grid-search-over-multiple-classifiers)
 
-
 GridSearchCV
 * [Tuning the hyper-parameters of an estimator](https://scikit-learn.org/stable/modules/grid_search.html)
 
 Classification
 * [Choosing the Best Algorithm for your Classification Model](https://medium.com/datadriveninvestor/choosing-the-best-algorithm-for-your-classification-model-7c632c78f38f)
+
+Git/Github
+* [GitFlow](https://datasift.github.io/gitflow/IntroducingGitFlow.html)
+* [A successful Git branching model](https://nvie.com/posts/a-successful-git-branching-model/)
+* [5 types of Git workflows](https://buddy.works/blog/5-types-of-git-workflows)
+
+Docstrings, DRY, PEP8
+* [Python Docstrings](https://www.geeksforgeeks.org/python-docstrings/)
+* [DRY](https://www.youtube.com/watch?v=IGH4-ZhfVDk)
+* [PEP 8 -- Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
+
+Data Visualization
+* [10 Python Data Visualization Libraries for Any Field | Mode](https://mode.com/blog/python-data-visualization-libraries/)
+* [5 Quick and Easy Data Visualizations in Python with Code](https://towardsdatascience.com/5-quick-and-easy-data-visualizations-in-python-with-code-a2284bae952f)
+* [The Best Python Data Visualization Libraries](https://www.fusioncharts.com/blog/best-python-data-visualization-libraries/)
