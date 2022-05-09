@@ -16,7 +16,8 @@ import pickle
 import re
 
 import nltk
-nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger', 'stopwords'])
+nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger', 'stopwords', 'omw-1.4'])
+
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import PorterStemmer
@@ -559,7 +560,7 @@ def main():
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
 
         # start pipelining, build the model
-        pipeline_names = ['pipeline_1']
+        pipeline_names = ['pipeline_2', 'pipeline_3']
         for pipeline_name in pipeline_names:
             print('Building model...')
             model, pipeline, parameters = build_model(X_train, Y_train, pipeline_name)
