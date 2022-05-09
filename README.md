@@ -177,7 +177,7 @@ Dataset with 26028 observations (messages) and 40 columns
 The notebook ***ETL Pipeline Preparation.ipynb*** contains the data engineering steps and and all the results.
 
 - ***NaN values***: All missing values are attributed tto the categorical varibale 'original'. This column is not needed for modeling. Hence those NaN values do not need to be imputed.
-- ***Dublicate values***: 170 dublicate values were found during ETL processing. Those were removed from the dataset.
+rf_bestrf_best- ***Dublicate values***: 170 dublicate values were found during ETL processing. Those were removed from the dataset.
 - ***special values***: Rows, where column 'related' is classified with 2 were dropped. Those messages are messages which are, e.g.
     - not translated
     - without a meaning or not not understandable code like     
@@ -260,6 +260,7 @@ The model consists of sklearn [pipeline](https://scikit-learn.org/stable/modules
 The answers to the CRISP questions (see above) and further information can be found in the jupyter notebook. The most important results are:
 
 - ***Answer to question 1***: How are the three different 'genre' types distributed?
+
     ![image4]
 
     Almost half of the messages (13036) messages are 'news' messages. There are 10634 'direct' and
@@ -306,73 +307,68 @@ The answers to the CRISP questions (see above) and further information can be fo
 - There is some outlier spreading in each genre due to long messages. News have longer text sequences than direct or social messages. To further improve the model one could use data padding/truncating techniques so that all messages have the same length.
 
 
-## Setup Instructions <a name="Setup_Instructions"></a>
-The following is a brief set of instructions on setting up a cloned repository.
+## Setup Instructions <a id="Setup_Instructions"></a>
+Let's get a cloned repository ready to run the project on your local machine for own developments.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-### Prerequisites: Installation of Python via Anaconda and Command Line Interaface <a name="Prerequisites"></a>
-- Install [Anaconda](https://www.anaconda.com/distribution/). Install Python 3.7 - 64 Bit
-- If you need a Command Line Interface (CLI) under Windows you could use [git](https://git-scm.com/). Under Mac OS use the pre-installed Terminal.
-
-- Upgrade Anaconda via
-```
+### Prerequisites: Installation of Python via Miniconda and Command Line Interaface
+- Install [Miniconda3 - 64-bit - Python >= 3.8](https://docs.conda.io/en/latest/miniconda.html).
+- If you are a Windows user and you need a Command Line Interface (CLI) you could use [git](https://git-scm.com/). Under Mac OS use the pre-installed Terminal.
+- After installation of miniconda upgrade it via
+```sh
 $ conda upgrade conda
 $ conda upgrade --all
 ```
 
-- Optional: In case of trouble add Anaconda to your system path. Write in your CLI
-```
+- Optional: In case of trouble add Anaconda to your system path. Write in your Command Line Interface (CLI)
+```sh
 $ export PATH="/path/to/anaconda/bin:$PATH"
 ```
 
-### Clone the project <a name="Clone_the_project"></a>
-- Open your Command Line Interface
-- Change Directory to your project older, e.g. `cd my_github_projects`
-- Clone the Github Project inside this folder with Git Bash (Terminal) via:
-```
+### Clone the project 
+- Open your CLI
+- Change Directory to your favorite project folder, e.g. `cd my_gitlab_projects`
+- Clone the Github Project inside this folder via:
+```sh
 $ git clone https://github.com/ddhartma/Disaster-Response-Pipeline-Project.git
 ```
 
 - Change Directory
-```
+```sh
 $ cd Disaster-Response-Pipeline-Project
 ```
 
 - Create a new Python environment, e.g. ds_ndp. Inside Git Bash (Terminal) write:
-```
-$ conda create --name ds_ndp
+```sh
+$ conda create --name ds_ndp python=3.7.4
+$ conda activate ds_ndp
 ```
 
-- Install the following packages (via pip or conda)
+- Install all packages provided in ```requirements.txt``` (via pip).
+```sh
+$ pip install -r requirements.txt
 ```
-numpy = 1.17.4
-pandas = 0.24.2
-scikit-learn = 0.20
-pipelinehelper = 0.7.8
-```
-Example via pip:
-```
-pip install numpy
-pip install pandas
-pip install scikit-learn==0.20
-pip install pipelinehelper
+
+- In case of problems:
+```sh
+$ pip install scikit-learn==0.20
 ```
 scikit-learn==0.20 is needed for sklearns dictionary output (output_dict=True) for the classification_report. Earlier versions do not support this.
+
+
+- Check the environment installation via
+```sh
+$ conda env list
+```
 
 
 Link1 to [pipelinehelper](https://github.com/bmurauer/pipelinehelper)
 
 Link2 to [pipelinehelper](https://stackoverflow.com/questions/23045318/scikit-grid-search-over-multiple-classifiers)
 
-- Check the environment installation via
-```
-$ conda env list
-```
 
-- Activate the installed environment via
-```
-$ conda activate ds_ndp
+- Add ds_ndp conda environment to your jupyter notebook environments
+```sh
+$ python -m ipykernel install --user --name=ds_ndp
 ```
 
 ### Switch the pipelines
