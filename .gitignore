@@ -1,5 +1,16 @@
+# Folder: models
 models/classifier_pipeline_1.pkl
 models/classifier_pipeline_2.pkl
+
+# Folder: app
 app/__pycache__/
-ML/.ipynb_checkpoints/ML Pipeline Preparation-checkpoint.ipynb
 app/templates/master_backup.html
+app/templates/.ipynb_checkpoints/
+
+# Folder: ML
+ML/.ipynb_checkpoints/ML Pipeline Preparation-Short-checkpoint.ipynb
+ML/.ipynb_checkpoints/most_common_words-checkpoint.csv
+ML/.ipynb_checkpoints/ML Pipeline Preparation-checkpoint.ipynb
+
+# Folder: ETL
+ETL/.ipynb_checkpoints/
