@@ -26,6 +26,9 @@ A **typical message** could be:
 **Aim**: An **automatic evaluation of text based news** could **simplify a decision process** for emergency organisations and **accelerate deliveries** of relief goods.
 
 In this project the used dataset is based on ***real*** disaster data from [Figure Eight](https://appen.com/).
+
+<img src="assets/4.png" width=1000px>
+
 ## Outline
 -  [The Pipelining Process (files in the repo)](#Pipelining_Process)
 -  [The Web App](#web_app)
