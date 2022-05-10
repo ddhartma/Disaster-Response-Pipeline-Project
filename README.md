@@ -10,14 +10,20 @@
 
 Let's create a machine learning pipeline that is able to save human life during natural disasters.
 
-To achieve this task take a data set containing real messages that were sent during disaster events. Train a machine learning pipeline and create a web app to categorize new messages. An emergency worker can then:
-  - input a new message,
-  - get classification results in several categories and
-  - send such classified reports (automatically) to an appropriate disaster relief agency.
+To achieve this task take a data set containing **real messages** that were sent **during disaster events**.
+
+Let's train a machine learning pipeline and create a web app to categorize new messages. An emergency worker can then:
+  - **input** a new message,
+  - get **classification results** in several categories and
+  - **send** such classified **reports** (automatically) to an appropriate **disaster relief agency**.
 
 Examples of natural disasters resulting from natural processes of the Earth include floods, hurricanes, tornadoes, volcanic eruptions, earthquakes, tsunamis, storms, and other geologic processes. Those disasters can cause loss of life and lead to private and public economic damages.
 
-An automatic evaluation of text based news could simplify a decision process for emergency organisations and accelerate deliveries of relief goods.
+A **typical message** could be:
+
+*The area is not safe for pedestrians and smaller vehicles as the area is still experiencing heavy rainfall and further upstream the rivers are still full of debris, which could easily be swept downstream with more rain.*
+
+**Aim**: An **automatic evaluation of text based news** could **simplify a decision process** for emergency organisations and **accelerate deliveries** of relief goods.
 
 In this project the used dataset is based on ***real*** disaster data from [Figure Eight](https://appen.com/).
 ## Outline
@@ -324,7 +330,7 @@ $ conda upgrade --all
 $ export PATH="/path/to/anaconda/bin:$PATH"
 ```
 
-### Clone the project 
+### Clone the project
 - Open your CLI
 - Change Directory to your favorite project folder, e.g. `cd my_gitlab_projects`
 - Clone the Github Project inside this folder via:
